@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>UOCC Coach Panel</title>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <span class="title">UOCC Coach</span>
+        <div class="mode">
+          <label><input type="radio" name="mode" value="coach" checked> Coach</label>
+          <label class="disabled"><input type="radio" name="mode" value="answer" disabled> Answer</label>
+          <span class="vr"></span>
+          <label>Voice: <input type="checkbox" id="voiceToggle" checked></label>
+          <button id="micBtn" title="Hold to record">🎤</button>
+        </div>
+      </div>
+      <div class="controls">
+        <button id="analyzeBtn">Analyze</button>
+        <button id="evaluateBtn">Run checks</button>
+        <button id="revealBtn">Reveal next hint</button>
+        <button id="speakBtn">🔊 Speak</button>
+      </div>
+
+      <section>
+        <h3>Code preview</h3>
+        <pre id="code"></pre>
+      </section>
+
+      <section>
+        <h3>Hints</h3>
+        <div id="hints">
+          <div class="hint" id="hint1"></div>
+          <div class="hint locked" id="hint2"></div>
+          <div class="hint locked" id="hint3"></div>
+        </div>
+      </section>
+
+      <section>
+        <h3>Test results</h3>
+        <div id="tests"></div>
+      </section>
+
+      <section>
+        <h3>Session meter</h3>
+        <div id="meter"></div>
+      </section>
+    </div>
+  </body>
+</html>
+
+

@@ -1,0 +1,31 @@
+{
+  "name": "uocc-vscode",
+  "displayName": "UOCC Coach",
+  "version": "0.1.0",
+  "publisher": "uocc",
+  "engines": { "vscode": "^1.90.0" },
+  "activationEvents": [
+    "onCommand:uocc.coachFile"
+  ],
+  "contributes": {
+    "commands": [
+      {
+        "command": "uocc.coachFile",
+        "title": "UOCC: Coach this file"
+      }
+    ]
+  },
+  "main": "./dist/extension.js",
+  "scripts": {
+    "vscode:prepublish": "tsc -p ./",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.90.0",
+    "typescript": "^5.4.5",
+    "vsce": "^2.15.0"
+  }
+}
+
+
