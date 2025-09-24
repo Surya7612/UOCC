@@ -5,13 +5,30 @@ import { chatTutorJSON } from '../lib/llm';
 const router = Router();
 
 router.post('/', async (req, res) => {
-  const parsed = ChatInSchema.safeParse(req.body);
-  if (!parsed.success) {
-    return res.status(400).json({ error: 'Invalid request', details: parsed.error.flatten() });
+  // Validate request
+  const parsedIn = ChatInSchema.safeParse(req.body);
+  if (!parsedIn.success) {
+    return res.status(400).json({ error: 'Invalid request', details: parsedIn.error.flatten() });
   }
+
   try {
-    const result = await chatTutorJSON(parsed.data);
-    const out = ChatOutSchema.parse(result);
+    const ai = await chatTutorJSON(parsedIn.data);
+
+    // ---- sanitize partial unlock from the model (common in Answer mode) ----
+    if (ai && typeof ai === 'object' && 'unlock' in ai && ai.unlock) {
+      const u = ai.unlock as any;
+      const badL2 = typeof u?.l2 !== 'boolean';
+      const badL3 = typeof u?.l3 !== 'boolean';
+      // if both missing, drop unlock; if one missing, drop the missing prop
+      if (badL2 && badL3) {
+        delete (ai as any).unlock;
+      } else {
+        if (badL2) delete (ai as any).unlock.l2;
+        if (badL3) delete (ai as any).unlock.l3;
+      }
+    }
+
+    const out = ChatOutSchema.parse(ai);
     return res.json(out);
   } catch (err: any) {
     return res.status(500).json({ error: err?.message || 'Chat error' });
@@ -19,5 +36,3 @@ router.post('/', async (req, res) => {
 });
 
 export default router;
-
-

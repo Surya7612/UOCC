@@ -1,0 +1,27 @@
+// {
+//   "compilerOptions": {
+//     "target": "ES2020",
+//     "module": "commonjs",
+//     "outDir": "dist",
+//     "rootDir": "src",
+//     "strict": true,
+//     "esModuleInterop": true,
+//     "skipLibCheck": true,
+//     "forceConsistentCasingInFileNames": true,
+//     "types": ["vscode"],
+//     "lib": ["ES2020", "DOM"]   
+//   },
+//   "include": ["src", "src/panel/types.d.ts"]
+// }
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "lib": ["ES2020", "DOM"],
+    "module": "CommonJS",
+    "rootDir": "src",
+    "outDir": "dist",
+    "strict": true,
+    "skipLibCheck": true
+  },
+  "include": ["src/**/*.ts"]
+}

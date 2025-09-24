@@ -3,7 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>UOCC Coach Panel</title>
+    <title>UOCC Coach</title>
+    <link rel="stylesheet" href="./panel.css" />
   </head>
   <body>
     <div class="container">
@@ -11,16 +12,23 @@
         <span class="title">UOCC Coach</span>
         <div class="mode">
           <label><input type="radio" name="mode" value="coach" checked> Coach</label>
-          <label class="disabled"><input type="radio" name="mode" value="answer" disabled> Answer</label>
+          <label><input type="radio" name="mode" value="answer" id="modeAnswer"> Answer</label>
           <span class="vr"></span>
           <label>Voice: <input type="checkbox" id="voiceToggle" checked></label>
-          <button id="micBtn" title="Hold to record">🎤</button>
+          <!-- This toggle is used when you click “Get Answer” to auto-speak the answer -->
+          <label style="margin-left:12px;">Answer Voice:
+            <input type="checkbox" id="answerVoiceToggle" checked>
+          </label>
+          <!-- Enable this if you want STT in the webview (works on most VS Code builds) -->
+          <button id="micBtn" title="Record 4s">🎤</button>
         </div>
       </div>
+
       <div class="controls">
         <button id="analyzeBtn">Analyze</button>
         <button id="evaluateBtn">Run checks</button>
         <button id="revealBtn">Reveal next hint</button>
+        <button id="getAnswerBtn">Get Answer</button>
         <button id="speakBtn">🔊 Speak</button>
       </div>
 
@@ -44,11 +52,16 @@
       </section>
 
       <section>
+        <h3>Chat</h3>
+        <div id="uocc-chat" class="chat"></div>
+      </section>
+
+      <section>
         <h3>Session meter</h3>
-        <div id="meter"></div>
+        <div id="meter">State: idle</div>
       </section>
     </div>
+
+    <script src="./panel.js"></script>
   </body>
 </html>
-
-

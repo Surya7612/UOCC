@@ -19,16 +19,16 @@ app.use(express.json({ limit: '5mb' }));
 app.get('/', (_req, res) => {
   res.json({ ok: true, name: 'uocc-coach-core' });
 });
-
+app.use(cors({ origin: '*'}));
 app.use('/analyze', analyzeRouter);
 app.use('/evaluate', evaluateRouter);
-app.use('/speak', speakRouter);
+app.use('/speak',express.json({ limit:'5mb', strict:false }), speakRouter);
 app.use('/chat', chatRouter);
 app.use('/metrics', metricsRouter);
 app.use('/stt', sttRouter);
 app.use('/s2s', s2sRouter);
 
-const port = Number(process.env.PORT || 4321);
+const port = Number(process.env.PORT || 3000);
 
 if (require.main === module) {
   app.listen(port, () => {

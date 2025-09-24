@@ -1,5 +1,8 @@
+"use strict";
 // import * as vscode from 'vscode';
-
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.activate = activate;
+exports.deactivate = deactivate;
 // export function activate(context: vscode.ExtensionContext) {
 //   const cmd = vscode.commands.registerCommand('uocc.coachFile', async () => {
 //     const editor = vscode.window.activeTextEditor;
@@ -7,7 +10,6 @@
 //       vscode.window.showInformationMessage('Open a file first.');
 //       return;
 //     }
-
 //     const panel = vscode.window.createWebviewPanel(
 //       'uoccCoach',
 //       'UOCC Coach',
@@ -18,7 +20,6 @@
 //         localResourceRoots: [vscode.Uri.joinPath(context.extensionUri, 'dist', 'panel')],
 //       }
 //     );
-
 //     // dist assets
 //     const scriptUri = panel.webview.asWebviewUri(
 //       vscode.Uri.joinPath(context.extensionUri, 'dist', 'panel', 'panel.js')
@@ -26,7 +27,6 @@
 //     const styleUri = panel.webview.asWebviewUri(
 //       vscode.Uri.joinPath(context.extensionUri, 'dist', 'panel', 'panel.css')
 //     );
-
 //     const csp = `
 //       default-src 'none';
 //       img-src ${panel.webview.cspSource} https: data:;
@@ -35,7 +35,6 @@
 //       connect-src http://localhost:3000;
 //       media-src data:;
 //     `;
-
 //     panel.webview.html = `<!doctype html>
 // <html>
 //   <head>
@@ -72,7 +71,6 @@
 //     <script src="${scriptUri}"></script>
 //   </body>
 // </html>`;
-
 //     // Prepare initial payload now
 //     const initial = () => {
 //       const ed = vscode.window.activeTextEditor;
@@ -83,25 +81,20 @@
 //         filename: ed.document.fileName,
 //       };
 //     };
-
 //     // Send initial immediately and on request
 //     panel.webview.postMessage({ type: 'initial', payload: initial() });
-
 //     panel.webview.onDidReceiveMessage((msg) => {
 //       if (!msg) return;
-
 //       if (msg.type === 'getInitial') {
 //         panel.webview.postMessage({ type: 'initial', payload: initial() });
 //         return;
 //       }
-
 //       if (msg.type === 'decorate' && msg.payload) {
 //         const { startLine, endLine, reason } = msg.payload as {
 //           startLine: number; endLine: number; reason?: string;
 //         };
 //         const ed = vscode.window.activeTextEditor;
 //         if (!ed) return;
-
 //         const deco = vscode.window.createTextEditorDecorationType({
 //           backgroundColor: new vscode.ThemeColor('editor.wordHighlightStrongBackground'),
 //           overviewRulerColor: 'rgba(255,165,0,0.8)',
@@ -113,65 +106,50 @@
 //         );
 //         ed.setDecorations(deco, [range]);
 //         if (reason) vscode.window.setStatusBarMessage(`UOCC: ${reason}`, 3000);
-
 //         panel.onDidDispose(() => deco.dispose());
 //       }
 //     });
 //   });
-
 //   context.subscriptions.push(cmd);
 // }
-
 // export function deactivate() {}
-import * as vscode from 'vscode';
-import * as path from 'path';
-
-export function activate(context: vscode.ExtensionContext) {
-  const cmd = vscode.commands.registerCommand('uocc.coachFile', async () => {
-    const editor = vscode.window.activeTextEditor;
-    if (!editor) {
-      vscode.window.showInformationMessage('Open a file first.');
-      return;
-    }
-
-    const panel = vscode.window.createWebviewPanel(
-      'uoccCoach',
-      'UOCC Coach',
-      { viewColumn: vscode.ViewColumn.Beside, preserveFocus: true },
-      {
-        enableScripts: true,
-        retainContextWhenHidden: true,
-        localResourceRoots: [
-          vscode.Uri.joinPath(context.extensionUri, 'dist', 'panel'),
-          vscode.Uri.joinPath(context.extensionUri, 'src', 'panel'),
-        ],
-      }
-    );
-
-    // Resolve CSS/JS with dist → src fallback
-    const cssFile = (await exists(context, 'dist/panel/panel.css'))
-      ? vscode.Uri.joinPath(context.extensionUri, 'dist', 'panel', 'panel.css')
-      : vscode.Uri.joinPath(context.extensionUri, 'src', 'panel', 'panel.css');
-
-    const jsFile = (await exists(context, 'dist/panel/panel.js'))
-      ? vscode.Uri.joinPath(context.extensionUri, 'dist', 'panel', 'panel.js')
-      : vscode.Uri.joinPath(context.extensionUri, 'src', 'panel', 'panel.js');
-
-    const cssUri = panel.webview.asWebviewUri(cssFile);
-    const jsUri  = panel.webview.asWebviewUri(jsFile);
-
-    const nonce = makeNonce();
-    const csp = [
-      "default-src 'none'",
-      `img-src ${panel.webview.cspSource} https: data:`,
-      `style-src ${panel.webview.cspSource} 'unsafe-inline'`,
-      // allow external script files (panel.js) from our extension
-      `script-src ${panel.webview.cspSource}`,
-      // allow API calls to your backend
-      `connect-src http://localhost:3000`
-    ].join('; ');
-
-    panel.webview.html = `
+const vscode = require("vscode");
+const path = require("path");
+function activate(context) {
+    const cmd = vscode.commands.registerCommand('uocc.coachFile', async () => {
+        const editor = vscode.window.activeTextEditor;
+        if (!editor) {
+            vscode.window.showInformationMessage('Open a file first.');
+            return;
+        }
+        const panel = vscode.window.createWebviewPanel('uoccCoach', 'UOCC Coach', { viewColumn: vscode.ViewColumn.Beside, preserveFocus: true }, {
+            enableScripts: true,
+            retainContextWhenHidden: true,
+            localResourceRoots: [
+                vscode.Uri.joinPath(context.extensionUri, 'dist', 'panel'),
+                vscode.Uri.joinPath(context.extensionUri, 'src', 'panel'),
+            ],
+        });
+        // Resolve CSS/JS with dist → src fallback
+        const cssFile = (await exists(context, 'dist/panel/panel.css'))
+            ? vscode.Uri.joinPath(context.extensionUri, 'dist', 'panel', 'panel.css')
+            : vscode.Uri.joinPath(context.extensionUri, 'src', 'panel', 'panel.css');
+        const jsFile = (await exists(context, 'dist/panel/panel.js'))
+            ? vscode.Uri.joinPath(context.extensionUri, 'dist', 'panel', 'panel.js')
+            : vscode.Uri.joinPath(context.extensionUri, 'src', 'panel', 'panel.js');
+        const cssUri = panel.webview.asWebviewUri(cssFile);
+        const jsUri = panel.webview.asWebviewUri(jsFile);
+        const nonce = makeNonce();
+        const csp = [
+            "default-src 'none'",
+            `img-src ${panel.webview.cspSource} https: data:`,
+            `style-src ${panel.webview.cspSource} 'unsafe-inline'`,
+            // allow external script files (panel.js) from our extension
+            `script-src ${panel.webview.cspSource}`,
+            // allow API calls to your backend
+            `connect-src http://localhost:3000`
+        ].join('; ');
+        panel.webview.html = `
     <!doctype html>
     <html>
     <head>
@@ -238,53 +216,47 @@ export function activate(context: vscode.ExtensionContext) {
       <script src="${jsUri}"></script>
     </body>
     </html>`;
-
-    // Send initial doc once panel is ready
-    const sendInitial = () => panel.webview.postMessage({
-      type: 'initial',
-      payload: {
-        source: editor.document.getText(),
-        lang: editor.document.languageId,
-        filename: path.basename(editor.document.fileName),
-      }
-    });
-    sendInitial();
-
-    panel.webview.onDidReceiveMessage((msg) => {
-      if (msg?.type === 'getInitial') sendInitial();
-
-      if (msg?.type === 'decorate' && msg.payload) {
-        const { startLine = 0, endLine = 0, reason = '' } = msg.payload;
-        const deco = vscode.window.createTextEditorDecorationType({
-          backgroundColor: new vscode.ThemeColor('editor.hoverHighlightBackground'),
-          overviewRulerColor: new vscode.ThemeColor('editorWarning.foreground'),
-          overviewRulerLane: vscode.OverviewRulerLane.Right,
-          isWholeLine: true,
+        // Send initial doc once panel is ready
+        const sendInitial = () => panel.webview.postMessage({
+            type: 'initial',
+            payload: {
+                source: editor.document.getText(),
+                lang: editor.document.languageId,
+                filename: path.basename(editor.document.fileName),
+            }
         });
-        const range = new vscode.Range(
-          new vscode.Position(Math.max(0, startLine), 0),
-          new vscode.Position(Math.max(0, endLine), 10000)
-        );
-        editor.setDecorations(deco, [range]);
-        panel.onDidDispose(() => deco.dispose());
-      }
+        sendInitial();
+        panel.webview.onDidReceiveMessage((msg) => {
+            if (msg?.type === 'getInitial')
+                sendInitial();
+            if (msg?.type === 'decorate' && msg.payload) {
+                const { startLine = 0, endLine = 0, reason = '' } = msg.payload;
+                const deco = vscode.window.createTextEditorDecorationType({
+                    backgroundColor: new vscode.ThemeColor('editor.hoverHighlightBackground'),
+                    overviewRulerColor: new vscode.ThemeColor('editorWarning.foreground'),
+                    overviewRulerLane: vscode.OverviewRulerLane.Right,
+                    isWholeLine: true,
+                });
+                const range = new vscode.Range(new vscode.Position(Math.max(0, startLine), 0), new vscode.Position(Math.max(0, endLine), 10000));
+                editor.setDecorations(deco, [range]);
+                panel.onDidDispose(() => deco.dispose());
+            }
+        });
     });
-  });
-
-  context.subscriptions.push(cmd);
+    context.subscriptions.push(cmd);
 }
-
-export function deactivate() {}
-
+function deactivate() { }
 function makeNonce() {
-  const s = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  return Array.from({length: 32}, () => s[Math.floor(Math.random()*s.length)]).join('');
+    const s = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    return Array.from({ length: 32 }, () => s[Math.floor(Math.random() * s.length)]).join('');
 }
-
-async function exists(ctx: vscode.ExtensionContext, rel: string): Promise<boolean> {
-  try {
-    const uri = vscode.Uri.joinPath(ctx.extensionUri, ...rel.split('/'));
-    await vscode.workspace.fs.stat(uri);
-    return true;
-  } catch { return false; }
+async function exists(ctx, rel) {
+    try {
+        const uri = vscode.Uri.joinPath(ctx.extensionUri, ...rel.split('/'));
+        await vscode.workspace.fs.stat(uri);
+        return true;
+    }
+    catch {
+        return false;
+    }
 }

@@ -20,14 +20,15 @@ app.use(express_1.default.json({ limit: '5mb' }));
 app.get('/', (_req, res) => {
     res.json({ ok: true, name: 'uocc-coach-core' });
 });
+app.use((0, cors_1.default)({ origin: '*' }));
 app.use('/analyze', analyze_1.default);
 app.use('/evaluate', evaluate_1.default);
-app.use('/speak', speak_1.default);
+app.use('/speak', express_1.default.json({ limit: '5mb', strict: false }), speak_1.default);
 app.use('/chat', chat_1.default);
 app.use('/metrics', metrics_1.default);
 app.use('/stt', stt_1.default);
 app.use('/s2s', s2s_1.default);
-const port = Number(process.env.PORT || 4321);
+const port = Number(process.env.PORT || 3000);
 if (require.main === module) {
     app.listen(port, () => {
         // eslint-disable-next-line no-console

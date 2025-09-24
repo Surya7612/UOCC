@@ -1,34 +1,44 @@
 // Use global fetch (Node 18+)
 
-export async function speak(text: string): Promise<{ audio: string }> {
-  const apiKey = process.env.ELEVENLABS_API_KEY;
-  const voiceId = process.env.ELEVENLABS_VOICE_ID || '21m00Tcm4TlvDq8ikWAM';
-  const clamped = (text || '').slice(0, 200);
-  if (!apiKey || !clamped) {
-    return { audio: 'data:audio/mpeg;base64,' };
-  }
-  const url = `https://api.elevenlabs.io/v1/text-to-speech/${voiceId}`;
-  const resp = await fetch(url, {
+export async function speak(text: string): Promise<string> {
+  const api = process.env.ELEVENLABS_API_KEY!;
+  const voice = process.env.ELEVENLABS_VOICE_ID!;
+  const base = process.env.ELEVENLABS_BASE_URL || 'https://api.elevenlabs.io/v1';
+  if (!api || !voice) throw new Error('ElevenLabs not configured');
+
+  // pre-format: short sentences read better
+  const toSay = text
+    .replace(/\s+/g, ' ')
+    .trim()
+    .replace(/([a-zA-Z0-9])\s*[-–]\s*/g, '$1 — ') // nicer dash pause
+    .slice(0, 240);
+
+  const body = {
+    text: toSay,
+    model_id: 'eleven_turbo_v2',       // smoother prosody
+    voice_settings: {
+      stability: 0.4,                  // a bit expressive
+      similarity_boost: 0.8,
+      style: 0.4,
+      use_speaker_boost: true
+    },
+    optimize_streaming_latency: 2      // okay for short clips
+  };
+
+  const res = await fetch(`${base}/text-to-speech/${voice}`, {
     method: 'POST',
     headers: {
-      'xi-api-key': apiKey,
-      'accept': 'audio/mpeg',
+      'xi-api-key': api,
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({
-      text: clamped,
-      model_id: 'eleven_turbo_v2',
-      optimize_streaming_latency: 0
-    })
+    body: JSON.stringify(body)
   });
-  if (!resp.ok) {
-    const errTxt = await resp.text().catch(() => "");
-    throw new Error(`ElevenLabs TTS ${resp.status}: ${errTxt}`);
-  }
-  const buf = Buffer.from(await resp.arrayBuffer());
-  const b64 = buf.toString('base64');
-  return { audio: `data:audio/mpeg;base64,${b64}` };
+
+  if (!res.ok) throw new Error(`TTS failed ${res.status}`);
+  const buf = Buffer.from(await res.arrayBuffer());
+  return `data:audio/mpeg;base64,${buf.toString('base64')}`;
 }
+
 
 export async function transcribe(dataUrl: string, mime: string = 'audio/webm'): Promise<string> {
   const apiKey = process.env.ELEVENLABS_API_KEY;
