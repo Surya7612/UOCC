@@ -25,10 +25,10 @@ SECURITY/UX
 - L3 unlocks only after a failed run (Coach mode)
 
 DELIVERABLES (MVP)
-- /evaluate (Python runner): pass/fail with failures[]
-- /analyze (LLM → L1/L2/L3 + complexity)
-- /speak (ElevenLabs TTS, short lines)
-- /chat (optional; conversational tutor JSON)
+- evaluate (Python runner): pass/fail with failures[]
+- analyze (LLM → L1/L2/L3 + complexity)
+- speak (ElevenLabs TTS, short lines)
+- chat (optional; conversational tutor JSON)
 - VS Code command "uocc.coachFile" → webview with Mode toggle + buttons
 - Decorations: highlight range on L3 and show hover message
 
@@ -37,12 +37,12 @@ UOCC (Universal Overlay Coding Coach)
 
 ### Acceptance (MVP)
 
-- [ ] /evaluate returns 0/3 fail on intentionally wrong Python solution
-- [ ] /evaluate returns 3/3 pass on correct Python solution
-- [ ] /analyze (stub) returns L1/L2/L3 + complexity + summary
+- [ ] evaluate returns 0/3 fail on intentionally wrong Python solution
+- [ ] evaluate returns 3/3 pass on correct Python solution
+- [ ] analyze (stub) returns L1/L2/L3 + complexity + summary
 - [ ] Webview: Analyze shows L1; Reveal shows L2; L3 locked
 - [ ] Run checks failure unlocks L3 and applies decoration on range
-- [ ] 🔊 Speak plays audio (≤200 chars)
+- [ ] Speak plays audio (≤200 chars)
 - [ ] Toggle Answer mode: Run checks hidden; Answer returns solution+complexity
 - [ ] Basic metrics sent to /metrics/event
 
