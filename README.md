@@ -10,7 +10,7 @@ A visible, local-first coding coach inside VS Code:
 - Optional voice (ElevenLabs)
 - Modes: Coach (default) / Answer (fast solution) / Chat (Q&A)
 
-Demo: <a href="https://x.com/NSURYA10/status/1970719039124365495">Demo</a>
+<a href="https://x.com/NSURYA10/status/1970719039124365495">Demo</a>
 
 SURFACES
 - VS Code extension (webview panel + editor decorations)
