@@ -4,11 +4,13 @@ PROJECT: UOCC (Universal Overlay Coding Coach) — VS Code MVP (Python-first)
 
 GOAL
 A visible, local-first coding coach inside VS Code:
-- Analyze code + problem text
-- Give L1/L2/L3 hints (escalating)
-- Run real tests (Python subprocess)
+- Analyze code open in your editor + problem text
+- Give Level 1/L2/L3 hints (escalating)
+- Run real tests (Python subprocess) to give you L2
 - Optional voice (ElevenLabs)
 - Modes: Coach (default) / Answer (fast solution) / Chat (Q&A)
+
+Demo: <a href="https://x.com/NSURYA10/status/1970719039124365495">Demo</a>
 
 SURFACES
 - VS Code extension (webview panel + editor decorations)
